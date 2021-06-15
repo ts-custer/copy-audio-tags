@@ -39,7 +39,7 @@ def main():
     source_file_suffix = fetch_file_suffix(source_file)
 
     target_file = mutagen.File(args.target_file)
-    # TODO Check if it's really a flac file
+    target_file_suffix = fetch_file_suffix(target_file)
 
     if source_file_suffix == '.mp3':
         frame_ids = set([s[:4] for s in source_file.tags.keys()])
