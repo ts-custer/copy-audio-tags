@@ -7,12 +7,12 @@ frame_id_to_key_mapping: Dict[str, Key] = {  # 'APIC': Picture is loaded, too, b
     'TPE1': Key.artist,
     'COMM': Key.comment,
     'TCOM': Key.composer,
-    'TYER': Key.date,
-    'TDRC': Key.date,
+    'TYER': Key.year,
+    'TDRC': Key.year,
     'TCON': Key.genre,
     'TIT2': Key.title,
     'TRCK': Key.track_number,
 }
 
-# TODO handle 'TYER' & 'TDRC' -> key.date
+# TODO handle 'TYER' & 'TDRC' -> key.year
 key_to_frame_id_mapping: Dict[Key, str] = {v: k for k, v in frame_id_to_key_mapping.items()}

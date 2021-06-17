@@ -19,10 +19,10 @@ class FlacTagWriterTest(unittest.TestCase):
         tag_data.set_key_value_pair(Key.artist, 'test artist')
         tag_data.set_key_value_pair(Key.comment, 'test comment')
         tag_data.set_key_value_pair(Key.composer, 'test composer')
-        tag_data.set_key_value_pair(Key.date, '2021')
         tag_data.set_key_value_pair(Key.genre, 'test genre')
         tag_data.set_key_value_pair(Key.title, 'test title')
         tag_data.set_key_value_pair(Key.track_number, '01/17')
+        tag_data.set_key_value_pair(Key.year, '2021')
 
         picture_file_name = 'flac.jpg'
         self.picture_full_filename = fixtures_directory_path + picture_file_name

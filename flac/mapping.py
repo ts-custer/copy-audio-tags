@@ -7,7 +7,7 @@ key_to_field_name_mapping: Dict[Key, str] = {  # field name 'PICTURE': Picture i
     Key.artist: 'ARTIST',
     Key.comment: 'DESCRIPTION',
     Key.composer: 'COMPOSER',
-    Key.date: 'DATE',
+    Key.year: 'DATE',
     Key.genre: 'GENRE',
     Key.title: 'TITLE',
     Key.track_number: 'TRACKNUMBER',

@@ -17,8 +17,11 @@ class Mp3TagFetcher:
         frame_ids = set([s[:4] for s in self.mp3_file.tags.keys()])
         for frame_id in frame_ids:
             key = frame_id_to_key_mapping.get(frame_id)
+            # print(f'KEY {key}')
             if key:
+                # print(self.mp3_file.tags.get(frame_id))
                 content = self.mp3_file.tags.get(frame_id) and self.mp3_file.tags.get(frame_id).text[0]
+                # print(content)
                 if content:
                     self._tag_data.set_key_value_pair(key, content)
         self.fetch_picture()

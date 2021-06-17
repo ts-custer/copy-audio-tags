@@ -4,7 +4,7 @@ from enum import Enum
 from typing import Dict, Any
 
 
-Key = Enum('Key', 'album artist comment composer date genre title track_number')
+Key = Enum('Key', 'album artist comment composer genre title track_number year')
 
 
 class Picture:
@@ -70,5 +70,9 @@ class TagData:
 
     def __hash__(self):
         return hash(self._key_value_mapping, self._picture)
+
+    def __str__(self):
+        return 'TagData (' + str(self._key_value_mapping) + ', ' + str(self._picture) + ')'
+
 
 
