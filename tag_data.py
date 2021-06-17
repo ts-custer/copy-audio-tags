@@ -4,14 +4,41 @@ from enum import Enum
 from typing import Dict, Any
 
 
-Key = Enum('Key', 'artist title album track_number genre date comment composer')
+Key = Enum('Key', 'album artist comment composer date genre title track_number')
+
+
+class Picture:
+
+    def __init__(self, name: str, data: bytes):
+        self._name: str = name
+        self._data: bytes = data
+
+    @property
+    def data(self):
+        return self._data
+
+    @property
+    def name(self):
+        return self._name
+
+    def __eq__(self, other):
+        if isinstance(other, Picture):
+            return self._name == other._name and self._data == other._data
+        else:
+            return NotImplemented
+
+    def __hash__(self):
+        return hash(self._name, self._data)
+
+    def __str__(self):
+        return f'Picture "{self._name}": {self._data}'
 
 
 class TagData:
 
     def __init__(self):
         self._key_value_mapping: Dict[Key, str] = {}
-        self._picture: bytes = None
+        self._picture: Picture = None
 
     def set_key_value_pair(self, key: Key, value: str):
         self._key_value_mapping[key] = str(value)
@@ -19,21 +46,29 @@ class TagData:
     def get_value_by_key(self, key: Key) -> str:
         return self._key_value_mapping.get(key, '')
 
-    @property
-    def key_value_mapping(self):
-        return self._key_value_mapping
+    def items(self):
+        return self._key_value_mapping.items()
 
     @property
-    def picture(self) -> bytes:
+    def picture(self) -> Picture:
         return self._picture
 
     @picture.setter
-    def picture(self, picture: bytes):
+    def picture(self, picture: Picture):
         self._picture = picture
 
     def pprint(self):
         for key, value in self._key_value_mapping.items():
             print(f"{key}: {value}")
-        print(f"picture: {self._picture}")
+        print(f'{self._picture}')
+
+    def __eq__(self, other):
+        if isinstance(other, TagData):
+            return self._key_value_mapping == other._key_value_mapping and self._picture == other._picture
+        else:
+            return NotImplemented
+
+    def __hash__(self):
+        return hash(self._key_value_mapping, self._picture)
 
 

@@ -4,7 +4,7 @@ import unittest
 
 import mutagen
 from flac import FlacTagWriter
-from tag_data import Key, TagData
+from tag_data import Key, TagData, Picture
 
 fixtures_directory_path = os.path.dirname(os.path.realpath(__file__)) + '/fixtures/'
 
@@ -14,22 +14,22 @@ class FlacTagWriterTest(unittest.TestCase):
     def setUp(self) -> None:
         self.empty_flac_file = mutagen.File(fixtures_directory_path + 'empty_flac.flac')
         self.reset_flac_file()
-        self.flac_tag_writer = FlacTagWriter(self.empty_flac_file)
-        self.flac_tag_writer.set_field(Key.album, 'test album')
-        self.flac_tag_writer.set_field(Key.artist, 'test artist')
-        self.flac_tag_writer.set_field(Key.comment, 'test comment')
-        self.flac_tag_writer.set_field(Key.composer, 'test composer')
-        self.flac_tag_writer.set_field(Key.date, '2021')
-        self.flac_tag_writer.set_field(Key.genre, 'test genre')
-        self.flac_tag_writer.set_field(Key.title, 'test title')
-        self.flac_tag_writer.set_field(Key.track_number, '01/17')
+        tag_data = TagData()
+        tag_data.set_key_value_pair(Key.album, 'test album')
+        tag_data.set_key_value_pair(Key.artist, 'test artist')
+        tag_data.set_key_value_pair(Key.comment, 'test comment')
+        tag_data.set_key_value_pair(Key.composer, 'test composer')
+        tag_data.set_key_value_pair(Key.date, '2021')
+        tag_data.set_key_value_pair(Key.genre, 'test genre')
+        tag_data.set_key_value_pair(Key.title, 'test title')
+        tag_data.set_key_value_pair(Key.track_number, '01/17')
 
         picture_file_name = 'flac.jpg'
         self.picture_full_filename = fixtures_directory_path + picture_file_name
         with open(self.picture_full_filename, "rb") as f:
             picture_data = f.read()
-        self.flac_tag_writer.set_picture(picture_file_name, picture_data)
-        self.flac_tag_writer.save()
+        tag_data.picture = Picture(picture_file_name, picture_data)
+        FlacTagWriter(self.empty_flac_file).write(tag_data)
 
     def tearDown(self) -> None:
         self.reset_flac_file()
