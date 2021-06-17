@@ -1,6 +1,7 @@
 # flac_tag_writer.py
 
 import mutagen
+from mutagen import flac, id3
 
 import tag_data
 from .mapping import key_to_field_name_mapping
@@ -11,16 +12,19 @@ class FlacTagWriter:
     def __init__(self, flac_file: mutagen.File):
         self.flac_file: mutagen.File = flac_file
 
-    def set_field(self, key: tag_data.key, content: str):
+    def write(self, tag_data: tag_data.TagData):
+        pass
+
+    def set_field(self, key: tag_data.Key, content: str):
         field_name = key_to_field_name_mapping.get(key)
         self.flac_file[field_name] = str(content)
 
-    def set_picture(self, type, mime, description, apic_picture_data):
+    def set_picture(self, picture_name: str, picture_data: bytes):
         picture = mutagen.flac.Picture()
-        picture.type = type
-        picture.mime = mime
-        picture.desc = description
-        picture.data = apic_picture_data
+        picture.type = id3.PictureType.COVER_FRONT
+        picture.mime = 'image/jpeg'
+        picture.desc = picture_name
+        picture.data = picture_data
         self.update_picture(picture)
 
     def update_picture(self, picture: mutagen.flac.Picture):

@@ -4,7 +4,7 @@ import unittest
 import mutagen
 
 from mp3 import Mp3TagFetcher
-from tag_data import key
+from tag_data import Key
 
 
 fixtures_directory_path = os.path.dirname(os.path.realpath(__file__)) + '/fixtures/'
@@ -38,13 +38,13 @@ class Id3v23FetcherTest(unittest.TestCase):
         self.mp3_tag_fetcher.fetch_mp3_tag()
 
     def test(self):
-        self.assertEqual('id3v2.3 album', self.mp3_tag_fetcher.tag_data.get_value_by_key(key.album))
-        self.assertEqual('id3v2.3 artist', self.mp3_tag_fetcher.tag_data.get_value_by_key(key.artist))
-        self.assertEqual('2021', self.mp3_tag_fetcher.tag_data.get_value_by_key(key.date))
-        self.assertEqual('08/11', self.mp3_tag_fetcher.tag_data.get_value_by_key(key.track_number))
-        self.assertEqual('id3v2.3 title', self.mp3_tag_fetcher.tag_data.get_value_by_key(key.title))
-        self.assertEqual('id3v2.3 genre', self.mp3_tag_fetcher.tag_data.get_value_by_key(key.genre))
-        self.assertEqual('id3v2.3 composer', self.mp3_tag_fetcher.tag_data.get_value_by_key(key.composer))
+        self.assertEqual('id3v2.3 album', self.mp3_tag_fetcher.tag_data.get_value_by_key(Key.album))
+        self.assertEqual('id3v2.3 artist', self.mp3_tag_fetcher.tag_data.get_value_by_key(Key.artist))
+        self.assertEqual('2021', self.mp3_tag_fetcher.tag_data.get_value_by_key(Key.date))
+        self.assertEqual('08/11', self.mp3_tag_fetcher.tag_data.get_value_by_key(Key.track_number))
+        self.assertEqual('id3v2.3 title', self.mp3_tag_fetcher.tag_data.get_value_by_key(Key.title))
+        self.assertEqual('id3v2.3 genre', self.mp3_tag_fetcher.tag_data.get_value_by_key(Key.genre))
+        self.assertEqual('id3v2.3 composer', self.mp3_tag_fetcher.tag_data.get_value_by_key(Key.composer))
         self.assertIsNotNone(self.mp3_tag_fetcher.tag_data.picture)
 
         picture_full_filename = fixtures_directory_path + 'id3v2.3.jpg'
@@ -61,13 +61,13 @@ class Id3v24FetcherTest(unittest.TestCase):
         self.mp3_tag_fetcher.fetch_mp3_tag()
 
     def test(self):
-        self.assertEqual('id3v2.4 album', self.mp3_tag_fetcher.tag_data.get_value_by_key(key.album))
-        self.assertEqual('id3v2.4 artist', self.mp3_tag_fetcher.tag_data.get_value_by_key(key.artist))
-        self.assertEqual('2022', self.mp3_tag_fetcher.tag_data.get_value_by_key(key.date))
-        self.assertEqual('09/12', self.mp3_tag_fetcher.tag_data.get_value_by_key(key.track_number))
-        self.assertEqual('id3v2.4 title', self.mp3_tag_fetcher.tag_data.get_value_by_key(key.title))
-        self.assertEqual('id3v2.4 genre', self.mp3_tag_fetcher.tag_data.get_value_by_key(key.genre))
-        self.assertEqual('id3v2.4 composer', self.mp3_tag_fetcher.tag_data.get_value_by_key(key.composer))
+        self.assertEqual('id3v2.4 album', self.mp3_tag_fetcher.tag_data.get_value_by_key(Key.album))
+        self.assertEqual('id3v2.4 artist', self.mp3_tag_fetcher.tag_data.get_value_by_key(Key.artist))
+        self.assertEqual('2022', self.mp3_tag_fetcher.tag_data.get_value_by_key(Key.date))
+        self.assertEqual('09/12', self.mp3_tag_fetcher.tag_data.get_value_by_key(Key.track_number))
+        self.assertEqual('id3v2.4 title', self.mp3_tag_fetcher.tag_data.get_value_by_key(Key.title))
+        self.assertEqual('id3v2.4 genre', self.mp3_tag_fetcher.tag_data.get_value_by_key(Key.genre))
+        self.assertEqual('id3v2.4 composer', self.mp3_tag_fetcher.tag_data.get_value_by_key(Key.composer))
         self.assertIsNotNone(self.mp3_tag_fetcher.tag_data.picture)
 
         picture_full_filename = fixtures_directory_path + 'id3v2.4.jpg'

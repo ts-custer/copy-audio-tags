@@ -1,16 +1,16 @@
 from typing import Dict
 
-from tag_data import key
+from tag_data import Key
 
-key_to_field_name_mapping: Dict[key, str] = {  # field name 'PICTURE': Picture is handled in another way
-    key.album: 'ALBUM',
-    key.artist: 'ARTIST',
-    key.comment: 'DESCRIPTION',
-    key.composer: 'COMPOSER',
-    key.date: 'DATE',
-    key.genre: 'GENRE',
-    key.title: 'TITLE',
-    key.track_number: 'TRACKNUMBER',
+key_to_field_name_mapping: Dict[Key, str] = {  # field name 'PICTURE': Picture is handled in another way
+    Key.album: 'ALBUM',
+    Key.artist: 'ARTIST',
+    Key.comment: 'DESCRIPTION',
+    Key.composer: 'COMPOSER',
+    Key.date: 'DATE',
+    Key.genre: 'GENRE',
+    Key.title: 'TITLE',
+    Key.track_number: 'TRACKNUMBER',
 }
 
-field_name_to_key_mapping: Dict[str, key] = {v: k for k,v in key_to_field_name_mapping.items()}
+field_name_to_key_mapping: Dict[str, Key] = {v: k for k, v in key_to_field_name_mapping.items()}
