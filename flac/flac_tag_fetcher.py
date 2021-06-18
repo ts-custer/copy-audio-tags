@@ -19,10 +19,9 @@ class FlacTagFetcher:
         for key, field_name in key_to_field_name_mapping.items():
             content = self.flac_file.get(field_name) and self.flac_file.get(field_name)[0]
             if content:
+                self._tag_data.set_key_value_pair(key, content)
                 if key == Key.track_number:
                     self.set_track_number(content, key)
-                else:
-                    self._tag_data.set_key_value_pair(key, content)
         self.fetch_picture()
 
     def set_track_number(self, track_number, key):
