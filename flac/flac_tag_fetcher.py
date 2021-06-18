@@ -21,10 +21,10 @@ class FlacTagFetcher:
             if content:
                 self._tag_data.set_key_value_pair(key, content)
                 if key == Key.track_number:
-                    self.set_track_number(content, key)
+                    self.fix_track_number_if_necessary(content, key)
         self.fetch_picture()
 
-    def set_track_number(self, track_number, key):
+    def fix_track_number_if_necessary(self, track_number, key):
         track_total_field_name = 'TRACKTOTAL'
         track_total = self.flac_file.get(track_total_field_name) and self.flac_file.get(track_total_field_name)[0]
         if track_total:

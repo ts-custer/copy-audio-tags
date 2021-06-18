@@ -7,6 +7,13 @@ import tag_data
 from .mapping import key_to_field_name_mapping
 
 
+def delete_flac_tags(flac_full_file_name: str):
+    flac_file = mutagen.File(flac_full_file_name)
+    flac_file.delete()
+    flac_file.clear_pictures()
+    flac_file.save()
+
+
 class FlacTagWriter:
 
     def __init__(self, flac_file: str):
@@ -15,7 +22,8 @@ class FlacTagWriter:
     def write(self, tag_data: tag_data.TagData):
         for key, value in tag_data.items():
             self.set_field(key, value)
-        self.set_picture(tag_data.picture)
+        if tag_data.picture:
+            self.set_picture(tag_data.picture)
         self.save()
 
     def set_field(self, key: tag_data.Key, content: str):

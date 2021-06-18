@@ -45,8 +45,16 @@ from mp3 import Mp3TagFetcher
 
 ############################
 
-flac_file_name = '/home/thees/PycharmProjects/copy-audio-tag-to-another-audio-file/test/integration/fixtures/flac.flac'
+# flac_file_name = '/home/thees/PycharmProjects/copy-audio-tag-to-another-audio-file/test/integration/fixtures/flac.flac'
+#
+# flac_tag_fetcher = FlacTagFetcher(flac_file_name)
+# flac_tag_fetcher.fetch_tags()
+# flac_tag_fetcher.tag_data.pprint()
 
-flac_tag_fetcher = FlacTagFetcher(flac_file_name)
-flac_tag_fetcher.fetch_tags()
-flac_tag_fetcher.tag_data.pprint()
+############################
+from mp3.mp3_tag_writer import delete_mp3_tags
+from flac import delete_flac_tags
+
+delete_mp3_tags('/home/thees/PycharmProjects/copy-audio-tag-to-another-audio-file/test/integration/fixtures/empty_mp3.mp3')
+delete_flac_tags('/home/thees/PycharmProjects/copy-audio-tag-to-another-audio-file/test/integration/fixtures/empty_flac.flac')
+

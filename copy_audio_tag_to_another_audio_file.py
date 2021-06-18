@@ -1,28 +1,19 @@
 #!/usr/bin/python3
 
 """
-A script to copy all audio tags including embedded cover picture of a mp3 file to a flac file.
+A script to copy all audio tags including embedded cover picture of a one audio file to another audio file.
 
 Requires library "mutagen" (https://github.com/quodlibet/mutagen) !
 
 Usage: copy_audio_tag_to_another_audio_file.py <source file> <target file>
 """
+import os
 from argparse import ArgumentParser
-from typing import Dict
-import mutagen
-import mutagen.flac
-from datetime import date
 
-frame_id_mapping: Dict[str, str] = {  # 'APIC': 'PICTURE', # Picture is copied, too, but in another way
-    # 'COMM': 'DESCRIPTION', # Comment of the flac file will be set to current date
-    'TCOM': 'COMPOSER',
-    'TIT2': 'TITLE',
-    'TRCK': 'TRACKNUMBER',
-    'TALB': 'ALBUM',
-    'TPE1': 'ARTIST',
-    'TCON': 'GENRE',
-    'TYER': 'DATE',
-    'TDRC': 'DATE'}
+from flac import FlacTagWriter
+from flac.flac_tag_fetcher import FlacTagFetcher
+from mp3 import Mp3TagFetcher
+from mp3.mp3_tag_writer import Mp3TagWriter
 
 
 def main():
@@ -35,63 +26,45 @@ def main():
                         help='Name of the target audio file')
     args = parser.parse_args()
 
-    source_file = mutagen.File(args.source_file)
-    source_file_suffix = fetch_file_suffix(source_file)
+    source_file_name = args.source_file
+    check_if_file_exists(source_file_name)
+    source_file_suffix = fetch_file_suffix(source_file_name)
 
-    target_file = mutagen.File(args.target_file)
-    target_file_suffix = fetch_file_suffix(target_file)
+    target_file_name = args.target_file
+    check_if_file_exists(target_file_name)
+    target_file_suffix = fetch_file_suffix(target_file_name)
 
     if source_file_suffix == '.mp3':
-        frame_ids = set([s[:4] for s in source_file.tags.keys()])
-        for frame_id in frame_ids:
-            copy_frame(source_file, target_file, frame_id)
-        copy_picture(source_file, target_file)
-        set_description(target_file)
-    # elif source_file_suffix == '.flac':
-    #     pass
+        mp3_tag_fetcher = Mp3TagFetcher(source_file_name)
+        mp3_tag_fetcher.fetch_mp3_tag()
+        tag_data = mp3_tag_fetcher.tag_data
+    elif source_file_suffix == '.flac':
+        flac_tag_fetcher = FlacTagFetcher(source_file_name)
+        flac_tag_fetcher.fetch_tags()
+        tag_data = flac_tag_fetcher.tag_data
     else:
         print(f'Not supported file type {source_file_suffix}')
+        exit(0)
 
-    target_file.save()
+    if target_file_suffix == '.mp3':
+        mp3_tag_writer = Mp3TagWriter(target_file_name)
+        mp3_tag_writer.write(tag_data)
+    elif target_file_suffix == '.flac':
+        flac_tag_writer = FlacTagWriter(target_file_name)
+        flac_tag_writer.write(tag_data)
+    else:
+        print(f'Not supported file type {target_file_suffix}')
+        exit(0)
+
+
+def check_if_file_exists(file_name: str):
+    if not os.path.isfile(file_name):
+        raise RuntimeError(f'File {file_name} does not exist')
 
 
 def fetch_file_suffix(file_name: str) -> str:
     last_dot_index = file_name.rfind('.')
     return '' if last_dot_index == -1 else file_name[last_dot_index:].lower()
-
-
-def copy_frame(mp3_file, flac_file, frame_id):
-    field_name = frame_id_mapping.get(frame_id)
-    if field_name:
-        content = mp3_file.tags.get(frame_id) and mp3_file.tags.get(frame_id).text[0]
-        if content:
-            flac_file[field_name] = str(content)
-
-
-def copy_picture(mp3_file: mutagen.File, flac_file: mutagen.File):
-    apic_list = mp3_file.tags.getall('APIC')
-    if apic_list:
-        first_apic = apic_list[0]
-        if first_apic:
-            set_picture(flac_file, first_apic.type, first_apic.mime, first_apic.desc, first_apic.data)
-
-
-def set_picture(flac_file: mutagen.File, type, mime, description, apic_picture_data):
-    picture = mutagen.flac.Picture()
-    picture.type = type
-    picture.mime = mime
-    picture.desc = description
-    picture.data = apic_picture_data
-    update_picture(flac_file, picture)
-
-
-def update_picture(flac_file: mutagen.File, picture: mutagen.flac.Picture):
-    flac_file.clear_pictures()
-    flac_file.add_picture(picture)
-
-
-def set_description(flac_file, comment: str = str(date.today())):
-    flac_file['DESCRIPTION'] = comment
 
 
 if __name__ == '__main__':

@@ -3,7 +3,7 @@ import os
 import unittest
 
 import mutagen
-from flac import FlacTagWriter
+from flac import FlacTagWriter, delete_flac_tags
 from tag_data import Key, TagData, Picture
 
 fixtures_directory_path = os.path.dirname(os.path.realpath(__file__)) + '/fixtures/'
@@ -13,7 +13,7 @@ flac_file_name = 'empty_flac.flac'
 class FlacTagWriterTest(unittest.TestCase):
 
     def setUp(self) -> None:
-        self.reset_flac_file()
+        delete_flac_tags(fixtures_directory_path + flac_file_name)
         tag_data = TagData()
         tag_data.set_key_value_pair(Key.album, 'test album')
         tag_data.set_key_value_pair(Key.artist, 'test artist')
@@ -32,14 +32,7 @@ class FlacTagWriterTest(unittest.TestCase):
         FlacTagWriter(fixtures_directory_path + flac_file_name).write(tag_data)
 
     def tearDown(self) -> None:
-        self.reset_flac_file()
-        pass
-
-    def reset_flac_file(self):
-        flac_file = mutagen.File(fixtures_directory_path + flac_file_name)
-        flac_file.delete()
-        flac_file.clear_pictures()
-        flac_file.save()
+        delete_flac_tags(fixtures_directory_path + flac_file_name)
 
     def test(self):
         flac_file = mutagen.File(fixtures_directory_path + flac_file_name)

@@ -5,7 +5,7 @@ import unittest
 from mutagen.id3 import ID3
 
 from mp3 import Mp3TagFetcher
-from mp3.mp3_tag_writer import Mp3TagWriter
+from mp3.mp3_tag_writer import Mp3TagWriter, delete_mp3_tags
 from tag_data import Key, TagData, Picture
 from mutagen.easyid3 import EasyID3
 
@@ -16,7 +16,7 @@ mp3_file_name = 'empty_mp3.mp3'
 class Mp3TagWriterTest(unittest.TestCase):
 
     def setUp(self) -> None:
-        self.reset_mp3_file()
+        delete_mp3_tags(fixtures_directory_path + mp3_file_name)
         self.expected_tag_data = TagData()
         self.expected_tag_data.set_key_value_pair(Key.album, 'test album 2')
         self.expected_tag_data.set_key_value_pair(Key.artist, 'test artist 2')
@@ -35,13 +35,7 @@ class Mp3TagWriterTest(unittest.TestCase):
         Mp3TagWriter(fixtures_directory_path + mp3_file_name).write(self.expected_tag_data)
 
     def tearDown(self) -> None:
-        self.reset_mp3_file()
-        pass
-
-    def reset_mp3_file(self):
-        mp3_file = EasyID3(fixtures_directory_path + mp3_file_name)
-        mp3_file.delete()
-        mp3_file.save()
+        delete_mp3_tags(fixtures_directory_path + mp3_file_name)
 
     def test(self):
         # Easy:
