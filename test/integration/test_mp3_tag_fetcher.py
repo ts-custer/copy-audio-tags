@@ -1,8 +1,6 @@
 import os
 import unittest
 
-import mutagen
-
 from mp3 import Mp3TagFetcher
 from tag_data import Key, TagData, Picture
 
@@ -67,8 +65,7 @@ class Id3v23FetcherTest(unittest.TestCase):
         self.expected_tag_data.picture = Picture(picture_name, picture_data)
 
     def test(self):
-        mp3_file = mutagen.File(fixtures_directory_path + 'id3v2.3.mp3')
-        mp3_tag_fetcher = Mp3TagFetcher(mp3_file)
+        mp3_tag_fetcher = Mp3TagFetcher(fixtures_directory_path + 'id3v2.3.mp3')
         mp3_tag_fetcher.fetch_mp3_tag()
         self.assertEqual(self.expected_tag_data, mp3_tag_fetcher.tag_data)
 
@@ -91,8 +88,7 @@ class Id3v24FetcherTest(unittest.TestCase):
         self.expected_tag_data.picture = Picture(picture_name, picture_data)
 
     def test(self):
-        mp3_file = mutagen.File(fixtures_directory_path + 'id3v2.4.mp3')
-        mp3_tag_fetcher = Mp3TagFetcher(mp3_file)
+        mp3_tag_fetcher = Mp3TagFetcher(fixtures_directory_path + 'id3v2.4.mp3')
         mp3_tag_fetcher.fetch_mp3_tag()
         self.assertEqual(self.expected_tag_data, mp3_tag_fetcher.tag_data)
 

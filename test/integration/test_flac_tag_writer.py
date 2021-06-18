@@ -7,12 +7,12 @@ from flac import FlacTagWriter
 from tag_data import Key, TagData, Picture
 
 fixtures_directory_path = os.path.dirname(os.path.realpath(__file__)) + '/fixtures/'
+flac_file_name = 'empty_flac.flac'
 
 
 class FlacTagWriterTest(unittest.TestCase):
 
     def setUp(self) -> None:
-        self.empty_flac_file = mutagen.File(fixtures_directory_path + 'empty_flac.flac')
         self.reset_flac_file()
         tag_data = TagData()
         tag_data.set_key_value_pair(Key.album, 'test album')
@@ -29,28 +29,30 @@ class FlacTagWriterTest(unittest.TestCase):
         with open(self.picture_full_filename, "rb") as f:
             picture_data = f.read()
         tag_data.picture = Picture(picture_file_name, picture_data)
-        FlacTagWriter(self.empty_flac_file).write(tag_data)
+        FlacTagWriter(fixtures_directory_path + flac_file_name).write(tag_data)
 
     def tearDown(self) -> None:
         self.reset_flac_file()
         pass
 
     def reset_flac_file(self):
-        self.empty_flac_file.delete()
-        self.empty_flac_file.clear_pictures()
-        self.empty_flac_file.save()
+        flac_file = mutagen.File(fixtures_directory_path + flac_file_name)
+        flac_file.delete()
+        flac_file.clear_pictures()
+        flac_file.save()
 
     def test(self):
-        self.assertEqual('test album', self.empty_flac_file.get('ALBUM')[0])
-        self.assertEqual('test artist', self.empty_flac_file.get('ARTIST')[0])
-        self.assertEqual('test comment', self.empty_flac_file.get('DESCRIPTION')[0])
-        self.assertEqual('test composer', self.empty_flac_file.get('COMPOSER')[0])
-        self.assertEqual('2021', self.empty_flac_file.get('DATE')[0])
-        self.assertEqual('test genre', self.empty_flac_file.get('GENRE')[0])
-        self.assertEqual('test title', self.empty_flac_file.get('TITLE')[0])
-        self.assertEqual('01/17', self.empty_flac_file.get('TRACKNUMBER')[0])
+        flac_file = mutagen.File(fixtures_directory_path + flac_file_name)
+        self.assertEqual('test album', flac_file.get('ALBUM')[0])
+        self.assertEqual('test artist', flac_file.get('ARTIST')[0])
+        self.assertEqual('test comment', flac_file.get('DESCRIPTION')[0])
+        self.assertEqual('test composer', flac_file.get('COMPOSER')[0])
+        self.assertEqual('2021', flac_file.get('DATE')[0])
+        self.assertEqual('test genre', flac_file.get('GENRE')[0])
+        self.assertEqual('test title', flac_file.get('TITLE')[0])
+        self.assertEqual('01/17', flac_file.get('TRACKNUMBER')[0])
 
-        embedded_picture = self.empty_flac_file.pictures[0]
+        embedded_picture = flac_file.pictures[0]
         with open(self.picture_full_filename, "rb") as f:
             picture_data = f.read()
         self.assertEqual(picture_data, embedded_picture.data)

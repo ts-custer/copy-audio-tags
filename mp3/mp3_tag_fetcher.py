@@ -8,9 +8,9 @@ from tag_data import TagData, Picture, Key
 
 class Mp3TagFetcher:
 
-    def __init__(self, mp3_file: mutagen.File):
+    def __init__(self, mp3_file: str):
         self._tag_data: TagData = None
-        self.mp3_file = mp3_file
+        self.mp3_file = mutagen.File(mp3_file)
 
     def fetch_mp3_tag(self):
         self._tag_data = TagData()

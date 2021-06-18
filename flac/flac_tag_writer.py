@@ -9,8 +9,8 @@ from .mapping import key_to_field_name_mapping
 
 class FlacTagWriter:
 
-    def __init__(self, flac_file: mutagen.File):
-        self.flac_file: mutagen.File = flac_file
+    def __init__(self, flac_file: str):
+        self.flac_file = mutagen.File(flac_file)
 
     def write(self, tag_data: tag_data.TagData):
         for key, value in tag_data.items():
