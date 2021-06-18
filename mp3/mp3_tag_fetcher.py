@@ -3,7 +3,7 @@
 import mutagen.flac
 
 from .mapping import frame_id_to_key_mapping
-from tag_data import TagData, Picture
+from tag_data import TagData, Picture, Key
 
 
 class Mp3TagFetcher:
@@ -16,7 +16,7 @@ class Mp3TagFetcher:
         self._tag_data = TagData()
         frame_id_to_mutagen_key = {mutagen_key[:4]: mutagen_key for mutagen_key in self.mp3_file.tags.keys()}
         for frame_id, mutagen_key in frame_id_to_mutagen_key.items():
-            key = frame_id_to_key_mapping.get(frame_id)
+            key: Key = frame_id_to_key_mapping.get(frame_id)
             # print(f'frame_id: {frame_id}, KEY {key}')
             if key:
                 # print(f'self.mp3_file.tags.get(mutagen_key): {self.mp3_file.tags.get(mutagen_key)}')
