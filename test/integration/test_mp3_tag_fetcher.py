@@ -55,8 +55,7 @@ class Id3v23FetcherTest(unittest.TestCase):
         self.expected_tag_data = TagData()
         self.expected_tag_data.set_key_value_pair(Key.album, 'id3v2.3 album')
         self.expected_tag_data.set_key_value_pair(Key.artist, 'id3v2.3 artist')
-        # TODO comment can't be loaded from mp3!
-        # self.expected_tag_data.set_key_value_pair(Key.comment, 'id3v2.3 comment')
+        self.expected_tag_data.set_key_value_pair(Key.comment, 'id3v2.3 comment')
         self.expected_tag_data.set_key_value_pair(Key.composer, 'id3v2.3 composer')
         self.expected_tag_data.set_key_value_pair(Key.genre, 'id3v2.3 genre')
         self.expected_tag_data.set_key_value_pair(Key.title, 'id3v2.3 title')
@@ -80,8 +79,7 @@ class Id3v24FetcherTest(unittest.TestCase):
         self.expected_tag_data = TagData()
         self.expected_tag_data.set_key_value_pair(Key.album, 'id3v2.4 album')
         self.expected_tag_data.set_key_value_pair(Key.artist, 'id3v2.4 artist')
-        # TODO comment can't be loaded from mp3!
-        # self.expected_tag_data.set_key_value_pair(Key.comment, 'id3v2.4 comment')
+        self.expected_tag_data.set_key_value_pair(Key.comment, 'id3v2.4 comment')
         self.expected_tag_data.set_key_value_pair(Key.composer, 'id3v2.4 composer')
         self.expected_tag_data.set_key_value_pair(Key.genre, 'id3v2.4 genre')
         self.expected_tag_data.set_key_value_pair(Key.title, 'id3v2.4 title')

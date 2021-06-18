@@ -14,14 +14,14 @@ class Mp3TagFetcher:
 
     def fetch_mp3_tag(self):
         self._tag_data = TagData()
-        frame_ids = set([s[:4] for s in self.mp3_file.tags.keys()])
-        for frame_id in frame_ids:
+        frame_id_to_mutagen_key = {mutagen_key[:4]: mutagen_key for mutagen_key in self.mp3_file.tags.keys()}
+        for frame_id, mutagen_key in frame_id_to_mutagen_key.items():
             key = frame_id_to_key_mapping.get(frame_id)
-            # print(f'KEY {key}')
+            # print(f'frame_id: {frame_id}, KEY {key}')
             if key:
-                # print(self.mp3_file.tags.get(frame_id))
-                content = self.mp3_file.tags.get(frame_id) and self.mp3_file.tags.get(frame_id).text[0]
-                # print(content)
+                # print(f'self.mp3_file.tags.get(mutagen_key): {self.mp3_file.tags.get(mutagen_key)}')
+                content = self.mp3_file.tags.get(mutagen_key) and self.mp3_file.tags.get(mutagen_key).text[0]
+                # print(f'content: {content}')
                 if content:
                     self._tag_data.set_key_value_pair(key, content)
         self.fetch_picture()
