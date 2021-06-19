@@ -1,8 +1,6 @@
 # mp3_tag_writer.py
 
 
-import mutagen
-from mutagen import flac, id3
 from mutagen.easyid3 import EasyID3
 from mutagen.mp3 import MP3
 from mutagen.id3 import APIC
@@ -36,4 +34,7 @@ class Mp3TagWriter:
         self.mp3_file.tags.add(frame_class(encoding=3, text=content))
 
     def set_picture(self, new_picture: Picture):
-        self.mp3_file.tags.add(APIC(encoding=3, mime='image/jpeg', type=3, desc=new_picture.name, data=new_picture.data))
+        self.mp3_file.tags.add(APIC(encoding=3,
+                                    mime='image/jpeg',
+                                    type=3, desc=new_picture.name,
+                                    data=new_picture.data))

@@ -7,20 +7,16 @@ from tag_data import Key, TagData, Picture
 fixtures_directory_path = os.path.dirname(os.path.realpath(__file__)) + '/fixtures/'
 
 
-# TODO implement and use
-def initiate_tag_data(id3_subversion: str) -> TagData:
+def initiate_tag_data(id3_subversion: int) -> TagData:
     tag_data = TagData()
-    id3version = f'id3v2.{id3_subversion}'
-    tag_data.set_key_value_pair(Key.album, f'id3v2.{id3_subversion} album')
-    tag_data.set_key_value_pair(Key.artist, 'id3v2.3 artist')
-    # TODO comment can't be loaded from mp3!
-    # tag_data.set_key_value_pair(Key.comment, 'id3v2.3 comment')
-    tag_data.set_key_value_pair(Key.composer, 'id3v2.3 composer')
-    tag_data.set_key_value_pair(Key.genre, 'id3v2.3 genre')
-    tag_data.set_key_value_pair(Key.title, 'id3v2.3 title')
-    tag_data.set_key_value_pair(Key.track_number, '08/11')
-    tag_data.set_key_value_pair(Key.year, '2021')
-    picture_name = 'id3v2.3.jpg'
+    version = f'id3v2.{id3_subversion}'
+    tag_data.set_key_value_pair(Key.album, f'{version} album')
+    tag_data.set_key_value_pair(Key.artist, f'{version} artist')
+    tag_data.set_key_value_pair(Key.comment, f'{version} comment')
+    tag_data.set_key_value_pair(Key.composer, f'{version} composer')
+    tag_data.set_key_value_pair(Key.genre, f'{version} genre')
+    tag_data.set_key_value_pair(Key.title, f'{version} title')
+    picture_name = f'{version}.jpg'
     with open(fixtures_directory_path + picture_name, "rb") as f:
         picture_data = f.read()
     tag_data.picture = Picture(picture_name, picture_data)
@@ -50,19 +46,9 @@ def initiate_tag_data(id3_subversion: str) -> TagData:
 class Id3v23FetcherTest(unittest.TestCase):
 
     def setUp(self) -> None:
-        self.expected_tag_data = TagData()
-        self.expected_tag_data.set_key_value_pair(Key.album, 'id3v2.3 album')
-        self.expected_tag_data.set_key_value_pair(Key.artist, 'id3v2.3 artist')
-        self.expected_tag_data.set_key_value_pair(Key.comment, 'id3v2.3 comment')
-        self.expected_tag_data.set_key_value_pair(Key.composer, 'id3v2.3 composer')
-        self.expected_tag_data.set_key_value_pair(Key.genre, 'id3v2.3 genre')
-        self.expected_tag_data.set_key_value_pair(Key.title, 'id3v2.3 title')
+        self.expected_tag_data = initiate_tag_data(3)
         self.expected_tag_data.set_key_value_pair(Key.track_number, '08/11')
         self.expected_tag_data.set_key_value_pair(Key.year, '2021')
-        picture_name = 'id3v2.3.jpg'
-        with open(fixtures_directory_path + picture_name, "rb") as f:
-            picture_data = f.read()
-        self.expected_tag_data.picture = Picture(picture_name, picture_data)
 
     def test(self):
         mp3_tag_fetcher = Mp3TagFetcher(fixtures_directory_path + 'id3v2.3.mp3')
@@ -73,19 +59,9 @@ class Id3v23FetcherTest(unittest.TestCase):
 class Id3v24FetcherTest(unittest.TestCase):
 
     def setUp(self) -> None:
-        self.expected_tag_data = TagData()
-        self.expected_tag_data.set_key_value_pair(Key.album, 'id3v2.4 album')
-        self.expected_tag_data.set_key_value_pair(Key.artist, 'id3v2.4 artist')
-        self.expected_tag_data.set_key_value_pair(Key.comment, 'id3v2.4 comment')
-        self.expected_tag_data.set_key_value_pair(Key.composer, 'id3v2.4 composer')
-        self.expected_tag_data.set_key_value_pair(Key.genre, 'id3v2.4 genre')
-        self.expected_tag_data.set_key_value_pair(Key.title, 'id3v2.4 title')
+        self.expected_tag_data = initiate_tag_data(4)
         self.expected_tag_data.set_key_value_pair(Key.track_number, '09/12')
         self.expected_tag_data.set_key_value_pair(Key.year, '2022')
-        picture_name = 'id3v2.4.jpg'
-        with open(fixtures_directory_path + picture_name, "rb") as f:
-            picture_data = f.read()
-        self.expected_tag_data.picture = Picture(picture_name, picture_data)
 
     def test(self):
         mp3_tag_fetcher = Mp3TagFetcher(fixtures_directory_path + 'id3v2.4.mp3')

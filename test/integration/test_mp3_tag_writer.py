@@ -7,7 +7,6 @@ from mutagen.id3 import ID3
 from mp3 import Mp3TagFetcher
 from mp3.mp3_tag_writer import Mp3TagWriter, delete_mp3_tags
 from tag_data import Key, TagData, Picture
-from mutagen.easyid3 import EasyID3
 
 fixtures_directory_path = os.path.dirname(os.path.realpath(__file__)) + '/fixtures/'
 mp3_file_name = 'empty_mp3.mp3'

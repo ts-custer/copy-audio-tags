@@ -2,7 +2,7 @@
 
 # Script to copy tags of all audio files of a source directory to all files of the current directory
 #
-# Usage: copy_audio_tags <Source Directory> [-t]
+# Usage: copy_audio_tags.sh <Source Directory> [-t]
 # If you set option -t ('test mode'), nothing will be saved.
 #
 #
@@ -66,7 +66,7 @@ function initiate_source_files() {
 function get_files_sorted() {
   local directory="${1}"
 
-  for filename in $(find "${directory}" -maxdepth 1 -type f | sort); do
+  for filename in $(find "${directory}/" -maxdepth 1 -type f -iname "*.mp3" -o -iname "*.flac" | sort); do
     echo "${filename}"
   done
 }
@@ -93,10 +93,10 @@ function execute() {
 
   for ((i = 0; i < ${number_of_target_files}; i++))
   do
-    echo "copy_audio_tag_to_another_audio_file.py \"${source_files[$i]}\" \"${target_files[$i]}\""
+    echo "python3 ~/bin/copy_audio_tag_to_another_audio_file.zip \"${source_files[$i]}\" \"${target_files[$i]}\""
     if [ "${test_mode}" -eq 0 ]
     then
-      $(copy_audio_tag_to_another_audio_file.py "${source_files[$i]}" "${target_files[$i]}")
+      $(python3 ~/bin/copy_audio_tag_to_another_audio_file.zip "${source_files[$i]}" "${target_files[$i]}")
     fi
   done
 

@@ -4,7 +4,6 @@ import mutagen
 from flac import key_to_field_name_mapping
 from tag_data import TagData, Picture, Key
 from mutagen.flac import FLAC
-from mutagen.flac import Picture as mutagen_picture
 from mutagen import id3
 
 
