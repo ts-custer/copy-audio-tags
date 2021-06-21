@@ -44,7 +44,7 @@ def main():
     else:
         print(f'{len(source_audio_files)} audio files in the specified source directory found.')
 
-    for index, target_audio_file in target_audio_files.enumerate():
+    for index, target_audio_file in enumerate(target_audio_files):
         copy_audio_tags(source_audio_files[index], target_audio_file)
 
 
