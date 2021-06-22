@@ -3,30 +3,57 @@ from argparse import ArgumentParser
 from pathlib import Path
 from typing import List
 
-from flac import FlacTagWriter
+from flac import FlacTagWriter, delete_flac_tags
 from flac.flac_tag_fetcher import FlacTagFetcher
 from mp3 import Mp3TagFetcher
-from mp3.mp3_tag_writer import Mp3TagWriter
+from mp3.mp3_tag_writer import Mp3TagWriter, delete_mp3_tags
 
 separator: str = os.sep
-
-
+test_mode = False
+update_comment = False
+replace = ''
+replace_with = ''
 
 """
 A script to copy the audio tags including embedded cover picture of all audio files (mp3 or flac) of a directory to all
 audio files (mp3 or flac) of the current working directory.
 
 Requires library "mutagen" (https://github.com/quodlibet/mutagen)!
-
-Usage:  copy_audio_tags <Source Directory> [-t]
-        If you set option -t ('test mode'), nothing will be saved.
 """
 def main():
-    parser = ArgumentParser(description=__doc__)
+    parser = ArgumentParser(prog='copy_audio_tags.sh', description=__doc__)
     parser.add_argument('source_directory',
                         type=str,
                         help='Directory with audio files to copy audio tags from')
+    # Flag 'test_mode':
+    parser.add_argument('-t',
+                        '--test_mode',
+                        help="If you set option -t ('test'), nothing will be saved",
+                        action='store_true')
+
+    # Flag 'update_comment':
+    parser.add_argument('-u',
+                        '--update_comment',
+                        help="If you set option -u ('update comment'), "
+                             "the 'comment' tag field will get the current date",
+                        action='store_true')
+
+    parser.add_argument('-r', '--replace', type=str, nargs=2, metavar=('OLD', 'NEW'),
+                        help="To specify a textual replacement in the to be copied tags")
+
     args = parser.parse_args()
+
+    global test_mode
+    test_mode = args.test_mode
+    global update_comment
+    update_comment = args.update_comment
+    if args.replace:
+        global replace
+        replace = args.replace[0]
+        global replace_with
+        replace_with = args.replace[1]
+
+    # print(test_mode, update_comment, replace, replace_with)
 
     target_audio_files = fetch_audio_files_sorted(Path(os.getcwd()))
     if not target_audio_files:
@@ -46,6 +73,9 @@ def main():
 
     for index, target_audio_file in enumerate(target_audio_files):
         copy_audio_tags(source_audio_files[index], target_audio_file)
+
+    if test_mode:
+        print('NOTHING SAVED BECAUSE OF TEST MODE (-t)!')
 
 
 def check_path_argument(path_argument: str) -> Path:
@@ -68,7 +98,7 @@ def fetch_audio_files_sorted(directory: Path) -> List[str]:
     return sorted(audio_file_list)
 
 
-# The most likely file types first! Note that they all consist of four lowercase characters and that "flac" has no dot (".") intentionally.
+# Note that they consist of four lowercase characters and that "flac" has no dot (".") intentionally.
 __AUDIO_FILE_SUFFIXES = {'.mp3', 'flac'}
 
 
@@ -93,13 +123,23 @@ def copy_audio_tags(source_file_name: str, target_file_name: str):
         print(f'Not supported file type {source_file_suffix}')
         exit(5)
 
+    if update_comment:
+        tag_data.update_comment()
+
+    if replace and replace_with:
+        tag_data.replace(replace, replace_with)
+
     target_file_suffix = fetch_file_suffix(target_file_name)
     if target_file_suffix == '.mp3':
+        delete_mp3_tags(target_file_name)
         mp3_tag_writer = Mp3TagWriter(target_file_name)
-        mp3_tag_writer.write(tag_data)
+        if not test_mode:
+            mp3_tag_writer.write(tag_data)
     elif target_file_suffix == '.flac':
+        delete_flac_tags(target_file_name)
         flac_tag_writer = FlacTagWriter(target_file_name)
-        flac_tag_writer.write(tag_data)
+        if not test_mode:
+            flac_tag_writer.write(tag_data)
     else:
         print(f'Not supported file type {target_file_suffix}')
         exit(5)

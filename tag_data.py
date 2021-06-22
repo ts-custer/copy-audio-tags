@@ -1,5 +1,5 @@
 # tag_data.py
-
+from datetime import date
 from enum import Enum
 from typing import Dict, Any
 
@@ -73,6 +73,14 @@ class TagData:
 
     def __str__(self):
         return 'TagData (' + str(self._key_value_mapping) + ', ' + str(self._picture) + ')'
+
+    def update_comment(self):
+        self.set_key_value_pair(Key.comment, str(date.today()))
+
+    def replace(self, replace: str, replace_with: str):
+        self._key_value_mapping = { key: content.replace(replace, replace_with)
+                                    for key, content in self._key_value_mapping.items() }
+
 
 
 
