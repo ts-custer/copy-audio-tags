@@ -21,7 +21,7 @@ audio files (mp3 or flac) of the current working directory.
 Requires library "mutagen" (https://github.com/quodlibet/mutagen)!
 """
 def main():
-    parser = ArgumentParser(prog='python3 copy_audio_tags.zip', description=__doc__)
+    parser = ArgumentParser(prog='python3 copy-audio-tags.zip', description=__doc__)
     parser.add_argument('source_directory',
                         type=str,
                         help='Directory with audio files to copy audio tags from')
