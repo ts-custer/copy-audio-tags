@@ -4,15 +4,18 @@ import os
 from pathlib import Path
 from typing import List
 
+from tag_data import AUDIO_FILE_SUFFIXES
+
 separator: str = os.sep
+
 
 def check_path_argument(path_argument: str) -> Path:
     possible_directory: Path = Path(path_argument)
     if not possible_directory.exists():
-        print("Directory '{}' does not exist".format(path_argument))
+        print(f"Directory '{path_argument}' does not exist")
         exit(1)
     if not possible_directory.is_dir():
-        print("'{}' is not a directory".format(path_argument))
+        print(f"'{path_argument}' is not a directory")
         exit(2)
     return possible_directory
 
@@ -26,15 +29,13 @@ def fetch_audio_files_sorted(directory: Path) -> List[str]:
     return sorted(audio_file_list)
 
 
-# Note that they consist of four lowercase characters and that "flac" has no dot (".") intentionally.
-__AUDIO_FILE_SUFFIXES = {'.mp3', 'flac'}
-
-
 def is_audio_file(filename):
-    lowered_last_four_characters_of_file_name = filename[-4:].lower()
-    return lowered_last_four_characters_of_file_name in __AUDIO_FILE_SUFFIXES
+    for suffix in AUDIO_FILE_SUFFIXES:
+        if filename.endswith(suffix):
+            return True
+    return False
 
 
-def fetch_file_suffix(file_name: str) -> str:
-    last_dot_index = file_name.rfind('.')
-    return '' if last_dot_index == -1 else file_name[last_dot_index:].lower()
+def check_if_file_exists(file_name: str):
+    if not os.path.isfile(file_name):
+        raise RuntimeError(f'File {file_name} does not exist')

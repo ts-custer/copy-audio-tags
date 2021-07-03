@@ -9,7 +9,7 @@ from tag_data import TagData, Picture, Key
 class Mp3TagFetcher:
 
     def __init__(self, mp3_file: str):
-        self._tag_data: TagData = None
+        self._tag_data = None
         self.mp3_file = mutagen.File(mp3_file)
 
     def fetch_mp3_tag(self):

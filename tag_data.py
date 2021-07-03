@@ -1,9 +1,13 @@
 # tag_data.py
 from datetime import date
 from enum import Enum
-from typing import Dict, Any
+from typing import Dict
 
-# You see the supported tag fields here:
+
+# Supported audio file types
+AUDIO_FILE_SUFFIXES = {'.mp3', '.flac'}
+
+# Supported tag fields
 Key = Enum('Key', 'album artist comment composer genre title track_number year')
 
 
@@ -38,7 +42,7 @@ class TagData:
 
     def __init__(self):
         self._key_value_mapping: Dict[Key, str] = {}
-        self._picture: Picture = None
+        self._picture = None
 
     def set_key_value_pair(self, key: Key, value: str):
         self._key_value_mapping[key] = str(value)
@@ -78,9 +82,17 @@ class TagData:
         self.set_key_value_pair(Key.comment, str(date.today()))
 
     def replace(self, replace: str, replace_with: str):
-        self._key_value_mapping = { key: content.replace(replace, replace_with)
-                                    for key, content in self._key_value_mapping.items() }
+        self._key_value_mapping = {
+            key: content.replace(replace, replace_with)
+            for key, content in self._key_value_mapping.items()
+        }
 
 
-
-
+def check_and_fetch_file_suffix(file_name: str) -> str:
+    last_dot_index = file_name.rfind('.')
+    file_suffix = file_name[last_dot_index:].lower()
+    if file_suffix not in AUDIO_FILE_SUFFIXES:
+        print(f'Not supported file type {file_suffix}\n{file_name}')
+        exit(1)
+    else:
+        return file_suffix

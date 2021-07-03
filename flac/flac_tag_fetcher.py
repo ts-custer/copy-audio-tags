@@ -10,7 +10,7 @@ from mutagen import id3
 class FlacTagFetcher:
 
     def __init__(self, flac_file: str):
-        self._tag_data: TagData = None
+        self._tag_data = None
         self.flac_file = mutagen.File(flac_file)
 
     def fetch_tags(self):

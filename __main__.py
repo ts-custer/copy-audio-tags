@@ -1,14 +1,10 @@
 #!/usr/bin/python3
 
-import os
 from argparse import ArgumentParser
-from pathlib import Path
-from file_utils import *
 
-from flac import FlacTagWriter, delete_flac_tags
-from flac.flac_tag_fetcher import FlacTagFetcher
-from mp3 import Mp3TagFetcher
-from mp3.mp3_tag_writer import Mp3TagWriter, delete_mp3_tags
+from audio_tag_fetcher import AudioTagFetcher
+from audio_tag_writer import write_tag_data_to_file
+from file_utils import *
 
 separator: str = os.sep
 test_mode = False
@@ -22,6 +18,8 @@ audio files (mp3 or flac) of the current working directory.
 
 Requires library "mutagen" (https://github.com/quodlibet/mutagen)!
 """
+
+
 def main():
     # parser = ArgumentParser(prog='python3 copy-audio-tags.zip', description=__doc__)
     parser = ArgumentParser(description=__doc__)
@@ -84,18 +82,9 @@ def main():
 def copy_audio_tags(source_file_name: str, target_file_name: str):
     print(f'Copying audio tags from  "{source_file_name}" ---> "{target_file_name}"')
 
-    source_file_suffix = fetch_file_suffix(source_file_name)
-    if source_file_suffix == '.mp3':
-        mp3_tag_fetcher = Mp3TagFetcher(source_file_name)
-        mp3_tag_fetcher.fetch_mp3_tag()
-        tag_data = mp3_tag_fetcher.tag_data
-    elif source_file_suffix == '.flac':
-        flac_tag_fetcher = FlacTagFetcher(source_file_name)
-        flac_tag_fetcher.fetch_tags()
-        tag_data = flac_tag_fetcher.tag_data
-    else:
-        print(f'Not supported file type {source_file_suffix}')
-        exit(5)
+    audio_tag_fetcher = AudioTagFetcher()
+    audio_tag_fetcher.fetch_tag(source_file_name)
+    tag_data = audio_tag_fetcher.tag_data
 
     if update_comment:
         tag_data.update_comment()
@@ -103,20 +92,8 @@ def copy_audio_tags(source_file_name: str, target_file_name: str):
     if replace and replace_with:
         tag_data.replace(replace, replace_with)
 
-    target_file_suffix = fetch_file_suffix(target_file_name)
-    if target_file_suffix == '.mp3':
-        delete_mp3_tags(target_file_name)
-        mp3_tag_writer = Mp3TagWriter(target_file_name)
-        if not test_mode:
-            mp3_tag_writer.write(tag_data)
-    elif target_file_suffix == '.flac':
-        delete_flac_tags(target_file_name)
-        flac_tag_writer = FlacTagWriter(target_file_name)
-        if not test_mode:
-            flac_tag_writer.write(tag_data)
-    else:
-        print(f'Not supported file type {target_file_suffix}')
-        exit(5)
+    if not test_mode:
+        write_tag_data_to_file(tag_data, target_file_name)
 
 
 if __name__ == '__main__':
