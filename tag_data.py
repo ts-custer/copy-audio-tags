@@ -32,7 +32,7 @@ class Picture:
             return NotImplemented
 
     def __hash__(self):
-        return hash(self._name, self._data)
+        return hash((self._name, self._data))
 
     def __str__(self):
         return f'Picture "{self._name}": {self._data}'
@@ -73,7 +73,7 @@ class TagData:
             return NotImplemented
 
     def __hash__(self):
-        return hash(self._key_value_mapping, self._picture)
+        return hash((self._key_value_mapping, self._picture))
 
     def __str__(self):
         return 'TagData (' + str(self._key_value_mapping) + ', ' + str(self._picture) + ')'
