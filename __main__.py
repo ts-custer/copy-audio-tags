@@ -2,7 +2,7 @@
 
 from argparse import ArgumentParser
 
-from audio_tag_fetcher import AudioTagFetcher
+from audio_tag_fetcher import fetch_tag_data
 from audio_tag_writer import write_tag_data_to_file
 from file_utils import *
 
@@ -82,9 +82,7 @@ def main():
 def copy_audio_tags(source_file_name: str, target_file_name: str):
     print(f'Copying audio tags from  "{source_file_name}" ---> "{target_file_name}"')
 
-    audio_tag_fetcher = AudioTagFetcher()
-    audio_tag_fetcher.fetch_tag(source_file_name)
-    tag_data = audio_tag_fetcher.tag_data
+    tag_data = fetch_tag_data(source_file_name)
 
     if update_comment:
         tag_data.update_comment()

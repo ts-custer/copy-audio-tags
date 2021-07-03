@@ -9,7 +9,7 @@ Usage: copy_audio_tag_to_another_audio_file.py <source file> <target file>
 """
 from argparse import ArgumentParser
 
-from audio_tag_fetcher import AudioTagFetcher
+from audio_tag_fetcher import fetch_tag_data
 from audio_tag_writer import write_tag_data_to_file
 from file_utils import check_if_file_exists
 
@@ -30,9 +30,7 @@ def main():
     target_file_name = args.target_file
     check_if_file_exists(target_file_name)
 
-    audio_tag_fetcher = AudioTagFetcher()
-    audio_tag_fetcher.fetch_tag(source_file_name)
-    tag_data = audio_tag_fetcher.tag_data
+    tag_data = fetch_tag_data(source_file_name)
 
     write_tag_data_to_file(tag_data, target_file_name)
 
