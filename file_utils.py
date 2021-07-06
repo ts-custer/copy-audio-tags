@@ -31,7 +31,7 @@ def fetch_audio_files_sorted(directory: Path) -> List[str]:
 
 def is_audio_file(filename):
     for suffix in AUDIO_FILE_SUFFIXES:
-        if filename.endswith(suffix):
+        if filename.lower().endswith(suffix):
             return True
     return False
 
