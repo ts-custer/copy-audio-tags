@@ -11,7 +11,7 @@ from argparse import ArgumentParser
 
 from audio_tag_fetcher import fetch_tag_data
 from audio_tag_writer import write_tag_data_to_file
-from file_utils import check_if_file_exists
+from audio_file_utils import check_if_file_exists
 
 
 def main():

@@ -1,10 +1,12 @@
 #!/usr/bin/python3
 
 from argparse import ArgumentParser
+from pathlib import Path
 
 from audio_tag_fetcher import fetch_tag_data
 from audio_tag_writer import write_tag_data_to_file
-from file_utils import *
+from audio_file_utils import fetch_audio_files_sorted, check_path_argument
+import os
 
 separator: str = os.sep
 test_mode = False
