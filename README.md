@@ -4,7 +4,7 @@ Python script that copies audio tag information of an audio file to another audi
 
 2021-06-24: At the moment only .mp3 and .flac files are supported.
 
-Requires Python library mutagen (https://github.com/quodlibet/mutagen)!
+Requires https://github.com/ts-custer/mutagen-wrapper
 
 ```
 usage: __main__.py [-h] [-t] [-u] [-r OLD NEW] source_directory
