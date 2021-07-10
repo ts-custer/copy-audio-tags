@@ -2,9 +2,13 @@
 
 Python script that copies audio tag information of an audio file to another audio file
 
-2021-06-24: At the moment only .mp3 and .flac files are supported.
+At the moment only .mp3 and .flac files are supported.
 
-Requires https://github.com/ts-custer/mutagen-wrapper
+Requires https://github.com/ts-custer/another-mutagen-wrapper
+and library "mutagen" https://github.com/quodlibet/mutagen.
+(The latter can be installed with 'apt-get install python3-mutagen'!)
+
+
 
 ```
 usage: __main__.py [-h] [-t] [-u] [-r OLD NEW] source_directory

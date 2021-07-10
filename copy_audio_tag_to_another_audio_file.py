@@ -3,7 +3,9 @@
 """
 A script to copy all audio tags including embedded cover picture of a one audio file to another audio file.
 
-Requires library "mutagen" (https://github.com/quodlibet/mutagen) !
+Requires https://github.com/ts-custer/another-mutagen-wrapper
+and library "mutagen" https://github.com/quodlibet/mutagen.
+(The latter can be installed with 'apt-get install python3-mutagen'!)
 
 Usage: copy_audio_tag_to_another_audio_file.py <source file> <target file>
 """
