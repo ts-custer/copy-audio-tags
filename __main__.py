@@ -3,8 +3,7 @@
 from argparse import ArgumentParser
 from pathlib import Path
 
-from audio_tag_fetcher import fetch_tag_data
-from audio_tag_writer import write_tag_data_to_file
+import another_mutagen_wrapper as amw
 from audio_file_utils import fetch_audio_files_sorted, check_path_argument
 import os
 
@@ -18,7 +17,7 @@ replace_with = ''
 A script to copy the audio tags including embedded cover picture of all audio files (mp3 or flac) of a directory to all
 audio files (mp3 or flac) of the current working directory.
 
-Requires library "mutagen" (https://github.com/quodlibet/mutagen)!
+Requires https://github.com/ts-custer/another-mutagen-wrapper
 """
 
 
@@ -84,7 +83,7 @@ def main():
 def copy_audio_tags(source_file_name: str, target_file_name: str):
     print(f'Copying audio tags from  "{source_file_name}" ---> "{target_file_name}"')
 
-    tag_data = fetch_tag_data(source_file_name)
+    tag_data = amw.fetch_tag_data(source_file_name)
 
     if update_comment:
         tag_data.update_comment()
@@ -93,7 +92,7 @@ def copy_audio_tags(source_file_name: str, target_file_name: str):
         tag_data.replace(replace, replace_with)
 
     if not test_mode:
-        write_tag_data_to_file(tag_data, target_file_name)
+        amw.write_tag_data_to_file(tag_data, target_file_name)
 
 
 if __name__ == '__main__':
