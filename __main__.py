@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 from argparse import ArgumentParser
+from datetime import date
 from pathlib import Path
 
 import another_mutagen_wrapper as amw
@@ -86,10 +87,10 @@ def copy_audio_tags(source_file_name: str, target_file_name: str):
     tag_data = amw.fetch_tag_data(source_file_name)
 
     if update_comment:
-        tag_data.update_comment()
+        tag_data.update_comment(str(date.today()))
 
     if replace and replace_with:
-        tag_data.replace(replace, replace_with)
+        tag_data.replace_in_all_fields(replace, replace_with)
 
     if not test_mode:
         amw.write_tag_data_to_file(tag_data, target_file_name)
